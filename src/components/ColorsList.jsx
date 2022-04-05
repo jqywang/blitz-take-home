@@ -3,7 +3,7 @@ import { styled } from "goober";
 import { ReactComponent as CloseSvg } from '../assets/close.svg';
 
 
-export const SelectedColorsList = ({colors, onClickHandler, isSelected, buttonStyle={}}) => {
+export const SelectedColorsList = ({colors, onClickHandler, isSelected}) => {
   if(isEmpty(colors)) {
     return null;
   }

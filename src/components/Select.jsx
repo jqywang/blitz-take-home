@@ -17,13 +17,13 @@ const textInputStyle = {
 
 const Select = () => {
   const [query, setQuery] = useState("");
-  const [queryData, setQueryData] = useState([]);
+  const [queryResults, setQueryResults] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
   const inputEl = useRef(null);
   const isDisabled = selectedColors.length >= 3;
   const {data, loading} = useGetColor({query});
   useEffect(() => {
-    setQueryData(sortBy(data, ["name"]));
+    setQueryResults(sortBy(data, ["name"]));
   }, [data]);
 
   const onUserQuery = debounce((e) => {
@@ -46,7 +46,7 @@ const Select = () => {
     );
   });
 
-  const onClickClear = () => {
+  const onClear = () => {
     setSelectedColors([]);
     inputEl.current.value = "";
     setQuery("");
@@ -58,9 +58,9 @@ const Select = () => {
         <TextInputWrapper>
           <SelectedColorsList onClickHandler={onDeselectColor} colors={selectedColors} isSelected/>
           <input ref={inputEl} style={textInputStyle} type="text" disabled={isDisabled} placeholder="Select..." onChange={onUserQuery}/>
-          <ClearButton onClick={onClickClear}>Clear</ClearButton>
+          <ClearButton onClick={onClear}>Clear</ClearButton>
         </TextInputWrapper>
-        {loading ? <LoadingSvg/>: <SelectedColorsList onClickHandler={onSelectColor} colors={queryData}/>}
+        {loading ? <LoadingSvg/>: <SelectedColorsList onClickHandler={onSelectColor} colors={queryResults}/>}
       </SelectControl>
     </Wrapper>
   );
@@ -74,12 +74,6 @@ const Wrapper = styled("div")`
 const SelectControl = styled("div")`
   max-width: 680px;
   width: 100%;
-`;
-
-const TextInput = styled("input")`
-  line-height: 26px;
-  width: 100%;
-  color: black;
 `;
 
 const TextInputWrapper = styled("div")`
