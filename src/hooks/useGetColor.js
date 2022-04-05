@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {filter as fuzzyFilter} from "fuzzaldrin-plus";
 
 const mockData = [
   { name: "Red", hex: "#DB2D2D" },
@@ -9,11 +10,14 @@ const mockData = [
   { name: "Violet", hex: "#602FED" },
   { name: "Rebecca Purple", hex: "#663399" },
 ];
+const nameArray = mockData.map(color => color.name);
 
 // This function can be improved. for example, fuzzy search
 const mockDatabaseResponse = (query) => {
+
+  const fuzzyResults = fuzzyFilter(nameArray, query);
   return mockData.filter(({ name }) => {
-    return name.indexOf(query) !== -1;
+    return fuzzyResults.indexOf(name) !== -1;
   });
 };
 
@@ -30,7 +34,6 @@ const queryPromise = (query) => {
 const useGetColor = ({ query = "" }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     setLoading(true);
     if (!query.length) {
